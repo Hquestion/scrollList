@@ -1,5 +1,5 @@
 /**
- * Created by hWX229431 on 2015/7/8.
+ * Created by Hexl on 2015/7/15.
  */
 ;(function ($) {
     var remBase = 100;
@@ -101,8 +101,10 @@
             height: '1.32rem',
             background: 'url(res/en/img/left-normal.png) no-repeat',
             'background-size': '100% 100%',
-            'z-index': 99
-        }).appendTo($container).hide();
+            'z-index': 99,
+            background: 'rgba(0,0,0,.5)',
+            'font-size': '24px'
+        }).text('left').appendTo($(this).find('.ourter')).hide();
         var $rightArrow = $('<div class="right-arrow">').css({
             position: 'absolute',
             top: '50%',
@@ -113,8 +115,10 @@
             height: '1.32rem',
             background: 'url(res/en/img/right-normal.png) no-repeat',
             'background-size': '100% 100%',
-            'z-index': 99
-        }).appendTo($container);
+            'z-index': 99,
+            background: 'rgba(0,0,0,.5)',
+            'font-size': '24px'
+        }).text('right').appendTo($(this).find('.ourter'));
         if(totalWidthInit <= $container.width()){
             $rightArrow.hide();
         }else {
@@ -122,12 +126,14 @@
         }
 
         $leftArrow.click(function (e) {
+            console.error('left click');
             e.preventDefault();
             e.stopPropagation();
             isDrag = false;
             scroll(-1);
         });
         $rightArrow.click(function (e) {
+            console.error('right click');
             e.preventDefault();
             e.stopPropagation();
             isDrag = false;
@@ -178,12 +184,12 @@
             var showNum = Math.floor($container.width() / $scrollEle.find('li').width());
             var isMore = $container.width() % $scrollEle.find('li').width() === 0;
             if (direction > 0) {
-                isDrag = false;
                 //scroll to left
                 if (leftPos + $container.width() >= totalWidth) {
                     //no scroll
                     $rightArrow.hide();
                 } else {
+                    isDrag = false;
                     hideButtons();
                     transitionElement($scrollEle);
                     if (leftPos + $container.width() > totalWidth - $container.width()) {
@@ -200,26 +206,28 @@
                             //left: -1 * (totalWidth - $container.width())+'px'
                         });
                         setTimeout(function(){
+                            isDrag = true;
                             checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
                             removeEvent();
-                        }, 200);
+                        }, 400);
                     }else{
                         //first content
-                       //$scrollEle.stop(true,true).animate({
-                       //     left: -1 * (leftPos + showNum * ($scrollEle.find('li').width() + px(parseFloat(setting.margin)))) + 'px'
-                       //}, 400, function(){
-                       //     checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
-                       //    removeEvent();
-                       //});
+                        //$scrollEle.stop(true,true).animate({
+                        //     left: -1 * (leftPos + showNum * ($scrollEle.find('li').width() + px(parseFloat(setting.margin)))) + 'px'
+                        //}, 400, function(){
+                        //     checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
+                        //    removeEvent();
+                        //});
                         console.error('go left');
                         $scrollEle.css({
                             left: -1 * (leftPos + showNum * ($scrollEle.find('li').width() + px(parseFloat(setting.margin)))) + 'px'
                             //transform: 'translate('+ (-1 * (leftPos + showNum * ($scrollEle.find('li').width() + px(parseFloat(setting.margin))))) +'px)'
                         });
                         setTimeout(function(){
+                            isDrag = true;
                             checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
                             removeEvent();
-                        }, 200);
+                        }, 400);
                     }
                 }
             } else {
@@ -228,43 +236,49 @@
                     //no scroll
                     $leftArrow.hide();
                 } else {
+                    isDrag = false;
                     hideButtons();
+                    transitionElement($scrollEle);
+                    $(document).unbind('mouseup');
+                    $(document).unbind('mousemove');
                     if (leftPos - $container.width() <= 0) {
                         //last content
                         console.error('go right');
-                        $scrollEle.stop(true,true).animate({
-                            left: 0 + 'px'
-                        }, 400, function(){
-                            checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
-                            removeEvent();
-                        });
-                        //$scrollEle.css({
-                        //    //left: 0 + 'px'
-                        //    transform: 'translate(0)'
-                        //});
-                        //setTimeout(function(){
+                        //$scrollEle.stop(true,true).animate({
+                        //    left: 0 + 'px'
+                        //}, 400, function(){
                         //    checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
                         //    removeEvent();
-                        //}, 200);
+                        //});
+                        $scrollEle.css({
+                            left: 0 + 'px'
+                            //transform: 'translate(0)'
+                        });
+                        setTimeout(function(){
+                            isDrag = true;
+                            checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
+                            removeEvent();
+                        }, 400);
 
                     }else {
                         //normal content
                         console.error('go right');
-                        $scrollEle.stop(true,true).animate({
-                            left: -1 * (leftPos - showNum * ($scrollEle.find('li').width() + px(parseFloat(setting.margin)))) + 'px'
-                        }, 400, function(){
-                            checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
-                            removeEvent();
-                        });
-
-                        //$scrollEle.css({
-                        //    //left: -1 * (leftPos - showNum * ($scrollEle.find('li').width() + px(parseFloat(setting.margin)))) + 'px'
-                        //    transform: 'translate('+-1 * (leftPos - showNum * ($scrollEle.find('li').width() + px(parseFloat(setting.margin))))+'px)'
-                        //});
-                        //setTimeout(function(){
+                        //$scrollEle.stop(true,true).animate({
+                        //    left: -1 * (leftPos - showNum * ($scrollEle.find('li').width() + px(parseFloat(setting.margin)))) + 'px'
+                        //}, 400, function(){
                         //    checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
                         //    removeEvent();
-                        //}, 200);
+                        //});
+
+                        $scrollEle.css({
+                            left: -1 * (leftPos - showNum * ($scrollEle.find('li').width() + px(parseFloat(setting.margin)))) + 'px'
+                            //transform: 'translate('+-1 * (leftPos - showNum * ($scrollEle.find('li').width() + px(parseFloat(setting.margin))))+'px)'
+                        });
+                        setTimeout(function(){
+                            isDrag = true;
+                            checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
+                            removeEvent();
+                        }, 400);
                     }
                 }
             }
@@ -298,6 +312,9 @@
                 });
             });
             $(document).unbind('mouseup').bind('mouseup', function(eUp){
+                if(!isDrag){
+                    return;
+                }
                 console.error('mouseup');
                 $(document).unbind('mousemove');
                 transitionElement($scrollEle);
@@ -305,49 +322,72 @@
                 var totalWidth = $scrollEle.find('li').length * (($scrollEle.find('li').width() + px(parseFloat(setting.margin)))) - px(parseFloat(setting.margin));
                 //check if reached the ledge
                 if(CurrentLeftPos > 0){
-                    $scrollEle.stop(true,true).animate({
-                        left: 0 + 'px'
-                    }, 400, function(){
-                        checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
-                        removeEvent();
-                    });
-                    //$scrollEle.css({
+                    //$scrollEle.stop(true,true).animate({
                     //    left: 0 + 'px'
-                    //});
-                    //setTimeout(function(){
+                    //}, 400, function(){
                     //    checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
                     //    removeEvent();
-                    //}, 200);
-                }else if(CurrentLeftPos < $ele.width() - totalWidth){
-                    $scrollEle.stop(true, true).animate({
-                        left: $ele.width() - totalWidth  + 'px'
-                    }, 400, function(){
+                    //});
+                    $scrollEle.css({
+                        left: 0 + 'px'
+                    });
+                    setTimeout(function(){
                         checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
                         removeEvent();
-                    });
-                    //$scrollEle.css({
+                    }, 400);
+                }else if(CurrentLeftPos < $ele.width() - totalWidth){
+                    //$scrollEle.stop(true, true).animate({
                     //    left: $ele.width() - totalWidth  + 'px'
-                    //});
-                    //setTimeout(function(){
+                    //}, 400, function(){
                     //    checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
                     //    removeEvent();
-                    //}, 200);
+                    //});
+                    $scrollEle.css({
+                        left: $ele.width() - totalWidth  + 'px'
+                    });
+                    setTimeout(function(){
+                        checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
+                        removeEvent();
+                    }, 400);
                 }else {
                     if(Math.abs(CurrentLeftPos) %  ($scrollEle.find('li').width() + px(parseFloat(setting.margin))) !== 0){
                         var num = parseInt(Math.abs(CurrentLeftPos) / ($scrollEle.find('li').width() + px(parseFloat(setting.margin))), 10);
-                        $scrollEle.stop(true,true).animate({
-                            left: -1*((num+1) * ($scrollEle.find('li').width() + px(parseFloat(setting.margin))))  + 'px'
-                        }, 400, function(){
-                            checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
-                            removeEvent();
-                        });
+                        if((num+1) * ($scrollEle.find('li').width() + px(parseFloat(setting.margin))) + $container.width() > totalWidth){
+                            //$scrollEle.stop(true, true).animate({
+                            //    left: $ele.width() - totalWidth  + 'px'
+                            //}, 400, function(){
+                            //    checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
+                            //    removeEvent();
+                            //});
+                            $scrollEle.css({
+                                left: $ele.width() - totalWidth  + 'px'
+                            });
+                            setTimeout(function(){
+                                checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
+                                removeEvent();
+                            }, 400);
+                        }else {
+                            //$scrollEle.stop(true,true).animate({
+                            //    left: -1*((num+1) * ($scrollEle.find('li').width() + px(parseFloat(setting.margin))))  + 'px'
+                            //}, 400, function(){
+                            //    checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
+                            //    removeEvent();
+                            //});
+                            $scrollEle.css({
+                                left: -1*((num+1) * ($scrollEle.find('li').width() + px(parseFloat(setting.margin))))  + 'px'
+                            });
+                            setTimeout(function(){
+                                checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
+                                removeEvent();
+                            }, 400);
+                        }
                         //$scrollEle.css({
                         //    left: -1*((num+1) * ($scrollEle.find('li').width() + px(parseFloat(setting.margin))))  + 'px'
                         //});
                         //setTimeout(function(){
                         //    checkToHideButton(Math.abs(parseFloat($scrollEle.css('left'))), totalWidth, $container.width());
                         //    removeEvent();
-                        //}, 200);
+                        //}, 400);
                     }
                 }
             });
