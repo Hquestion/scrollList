@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html style="font-size: 100px">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="../../../lib/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="jquery.sliderList.js"></script>
+    <style>
+        html{
+            font-size: 100px;
+        }
+        *{
+            margin: 0 ;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .sliderList{
+            width: 1520px;
+            margin-left: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+        .sliderList ul{
+            list-style: none;
+            width: 999999px;
+            position: absolute;
+        }
+        .sliderList ul:after{
+            display: block;
+            content: '\20';
+            clear: both;
+        }
+        .sliderList ul li{
+            float: left;
+            width: 365px;
+            height: 205px;
+            margin-left: 20px;
+            background: #ccc;
+        }
+        .sliderList ul li:nth-child(0){
+            margin-left: 0;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function(){
+            $('.sliderList').sliderList({
+                size: '5*7',
+                type: 'normal'
+            });
+        })
+    </script>
+
+</head>
+<body>
+<div class="sliderList">
+    <div class="slider-component" style="width: 1520px;
+            height: 200px;
+            overflow: hidden;">
+        <ul>
+
+            <li>
+                <div class="content">1</div>
+            </li>
+            <li>
+                <div class="content">2</div>
+            </li>
+            <li>
+                <div class="content">3</div>
+            </li>
+            <li>
+                <div class="content">4</div>
+            </li>
+            <li>
+                <div class="content">5</div>
+            </li>
+            <li>
+                <div class="content">6</div>
+            </li>
+            <li>
+                <div class="content">7</div>
+            </li>
+            <li>
+                <div class="content">8</div>
+            </li>
+            <li>
+                <div class="content">9</div>
+            </li>
+            <li>
+                <div class="content">10</div>
+            </li>
+            <li>
+                <div class="content">11</div>
+            </li>
+            <li>
+                <div class="content">12</div>
+            </li>
+            <li>
+                <div class="content">13</div>
+            </li>
+            <li>
+                <div class="content">14</div>
+            </li>
+            <li>
+                <div class="content">15</div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
