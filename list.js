@@ -28,6 +28,7 @@
 
         var setting = $.extend(defaults, settings);
         var $container = $(this).find(setting.selector);
+        var $ourter = $(this).find('.ourter');
         var $parent = $(this).css({
             position: 'relative'
         });
@@ -47,6 +48,11 @@
         //set css style
         $(this).css({
             width: '15.20rem'
+        });
+        $ourter.css({
+            position: 'relative',
+            width: setting.viewPortWidth,
+            height: setting.contentHeight
         });
         $container.css({
             width: setting.viewPortWidth,
@@ -104,7 +110,7 @@
             'z-index': 99,
             background: 'rgba(0,0,0,.5)',
             'font-size': '24px'
-        }).text('left').appendTo($(this).find('.ourter')).hide();
+        }).text('left').appendTo($ourter).hide();
         var $rightArrow = $('<div class="right-arrow">').css({
             position: 'absolute',
             top: '50%',
@@ -118,7 +124,7 @@
             'z-index': 99,
             background: 'rgba(0,0,0,.5)',
             'font-size': '24px'
-        }).text('right').appendTo($(this).find('.ourter'));
+        }).text('right').appendTo($ourter);
         if(totalWidthInit <= $container.width()){
             $rightArrow.hide();
         }else {
